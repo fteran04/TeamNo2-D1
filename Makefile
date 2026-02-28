@@ -1,4 +1,4 @@
-# hola
+# hola2
 CC		= mpicc
 CFLAGS		= -Wall
 
