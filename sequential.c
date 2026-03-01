@@ -17,6 +17,7 @@ void printVec(int arr[], int n){
     printf(">");
     printf("\n");
 }
+
 int main(){
     int a[] = {4, 7, 2, 1, 9, 12, 5, 6};
     int b[] = {10, 5, 9, 4, 2, 7, 2, 8};

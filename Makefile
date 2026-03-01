@@ -2,9 +2,9 @@
 CC		= mpicc
 CFLAGS		= -Wall
 
-PROGRAM 	= dot_product_sequential 
+PROGRAM 	= bruteforce_parallel 
 
-PROGRAMS 	= dot_product_parallel
+PROGRAMS 	= sequential bruteforce_parallel
 
 PROCS		= 4
 
@@ -14,8 +14,11 @@ PROCS		= 4
 
 all: $(PROGRAMS)
 
-dot_product_sequential: dot_product_sequential.c
-	gcc -Wall -o dot_product_sequential dot_product_sequential.c
+sequential: sequential.c
+	$(CC) $(CFLAGS) -o sequential sequential.c
+
+bruteforce_parallel: bruteforce_prallel.c
+	$(CC) $(CFLAGS) -o $(PROGRAM) bruteforce_prallel.c
 
 #
 # Other nice thingys
