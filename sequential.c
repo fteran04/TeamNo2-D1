@@ -1,39 +1,29 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-int dotProduct(int a[], int b[], int n){
-    int ans = 0;
-    int i;
-    for(i = 0; i < n; i++){
-        ans += a[i] * b[i];
+#include "dot_product.h"
+
+int main() {
+    int *a = NULL;
+    int *b = NULL;
+    int n = 0;
+
+    if (!read_vectors_from_stdin(&a, &b, &n)) {
+        fprintf(stderr, "Invalid input format. Expected: n, v1, v2\n");
+        return 1;
     }
-    return ans;
-}
 
-void printVec(int arr[], int n){
-    printf("< ");
-    for (int i = 0; i < n; i++){
-        printf("%d, ", arr[i]);
+    if (!is_power_of_two(n)) {
+        fprintf(stderr, "Vector length must be a power of two.\n");
+        free(a);
+        free(b);
+        return 1;
     }
-    printf(">");
-    printf("\n");
-}
 
-int main(){
-    int a[] = {4, 7, 2, 1, 9, 12, 5, 6};
-    int b[] = {10, 5, 9, 4, 2, 7, 2, 8};
-    int n = 8;
+    printf("dot_product_sequential = %d\n", dotProduct(a, b, n));
 
-    printf("a = ");
-    printVec(a, n);
-
-    printf("b = ");
-    printVec(b, n);
-
-    printf("\n");
-
-    int a_dot_b = dotProduct(a, b, n);
-
-    printf("a • b = %d\n", a_dot_b);
+    free(a);
+    free(b);
 
     return 0;
 }

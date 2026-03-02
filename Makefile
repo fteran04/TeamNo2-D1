@@ -1,37 +1,36 @@
-# hola2
-CC		= mpicc
-CFLAGS		= -Wall
+CC      = mpicc
+CFLAGS  = -Wall -Wextra -O2
 
-PROGRAM 	= bruteforce_parallel 
+PROCS   = 4
+DATA    = test_data.csv
 
-PROGRAMS 	= sequential bruteforce_parallel
-
-PROCS		= 4
-
-#
-# Targets, in order of appearance
-#
+PROGRAMS = sequential bruteforce_parallel tree_parallel gen_data
 
 all: $(PROGRAMS)
 
-sequential: sequential.c
-	$(CC) $(CFLAGS) -o sequential sequential.c
+dot_product.o: dot_product.c dot_product.h
+	$(CC) $(CFLAGS) -c dot_product.c
 
-bruteforce_parallel: bruteforce_prallel.c
-	$(CC) $(CFLAGS) -o $(PROGRAM) bruteforce_prallel.c
+sequential: sequential.c dot_product.o
+	$(CC) $(CFLAGS) -o sequential sequential.c dot_product.o
 
-#
-# Other nice thingys
-#
+bruteforce_parallel: bruteforce_parallel.c dot_product.o
+	$(CC) $(CFLAGS) -o bruteforce_parallel bruteforce_parallel.c dot_product.o
+
+tree_parallel: tree_parallel.c dot_product.o
+	$(CC) $(CFLAGS) -o tree_parallel tree_parallel.c dot_product.o
+
+gen_data: gen_data.c
+	$(CC) $(CFLAGS) -o gen_data gen_data.c
+
+run_seq: sequential
+	./sequential < $(DATA)
+
+run_brute: bruteforce_parallel
+	mpiexec -n $(PROCS) ./bruteforce_parallel < $(DATA)
+
+run_tree: tree_parallel
+	mpiexec -n $(PROCS) ./tree_parallel < $(DATA)
 
 clean:
 	rm -f *% *~ core *.o $(PROGRAMS)
-
-run:
-	@echo "Will run $(PROGRAM) using $(PROCS) processes:"; mpiexec -n $(PROCS) $(PROGRAM)
-
-auto_run:
-	@clear; echo -e "Will run $(PROGRAM) using $$((`getconf _NPROCESSORS_ONLN` / 2)) cores on host `hostname`:\n`lscpu` "; mpiexec -n $$((`getconf _NPROCESSORS_ONLN` / 2)) $(PROGRAM)
-
-auto_run_threads:
-	@clear; echo -e "Will run $(PROGRAM) using `getconf _NPROCESSORS_ONLN` hardware threads on host `hostname`:\n`lscpu` "; mpiexec -n `getconf _NPROCESSORS_ONLN` --use-hwthread-cpus $(PROGRAM)
