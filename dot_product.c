@@ -5,6 +5,16 @@
 #include <stdlib.h>
 #include <string.h>
 
+/*
+  Computes the dot product of two vectors of size n.
+ 
+  Time Complexity: O(n)
+  The function iterates once through the vectors, performing one
+  multiplication and one addition per element.
+ 
+  Space Complexity: O(1)
+  It uses only a constant amount of extra memory (the accumulator `ans`).
+ */
 int dotProduct(const int a[], const int b[], int n) {
     int ans = 0;
 

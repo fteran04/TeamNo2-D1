@@ -6,6 +6,24 @@
 
 #define ROOT_PROCESS 0
 
+/*
+  Parallel dot product using MPI with brute-force distribution.
+ 
+  Time Complexity:
+  O(n/p + p)
+ 
+  - Each process computes the dot product of a chunk of size n/p,
+    which costs O(n/p).
+  - The root process gathers p partial results and sums them,
+    which costs O(p).
+ 
+  Total parallel time:
+  T(n,p) = O(n/p + p)
+ 
+  Space Complexity:
+  O(n/p) per process (each process stores only its chunk of the vectors).
+ */
+
 int main(int argc, char *argv[]) {
   int p;
   int my_rank;

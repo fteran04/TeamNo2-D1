@@ -6,6 +6,26 @@
 
 #define ROOT_PROCESS 0
 
+/*
+  Parallel dot product using MPI with binary tree message passing reduction.
+ 
+  Time Complexity:
+  O(n/p + log p)
+ 
+  - Each process computes the dot product of a local chunk of size n/p,
+    which requires O(n/p) time (n/p multiplications and additions).
+ 
+  - The partial results are combined using a binary tree reduction.
+    At each step, half of the processes send their result and exit,
+    while the other half receive and accumulate the value.
+    This reduction takes log2(p) communication steps.
+ 
+  Total parallel time:
+  T(n,p) = O(n/p + log p)
+ 
+  Space Complexity:
+  O(n/p) per process for storing the local portions of the vectors.
+ */
 int main(int argc, char *argv[]) {
     int p;
     int my_rank;
